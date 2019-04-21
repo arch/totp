@@ -250,12 +250,12 @@ namespace Arch.Core
         }
 
         /// <summary>
-        /// Generates code for the specified <paramref name="securityToken"/>.
+        /// Generates TOTP for the specified <paramref name="securityToken"/>.
         /// </summary>
-        /// <param name="securityToken">The security token to generate code.</param>
+        /// <param name="securityToken">The security token to generate TOTP.</param>
         /// <param name="modifier">The modifier.</param>
         /// <returns>The generated code.</returns>
-        public static int GenerateCode(byte[] securityToken, string modifier = null)
+        public static int GenerateTotp(byte[] securityToken, string modifier = null)
         {
             if (securityToken == null)
             {
@@ -271,13 +271,13 @@ namespace Arch.Core
         }
 
         /// <summary>
-        /// Validates the code for the specified <paramref name="securityToken"/>.
+        /// Validates the TOTP for the specified <paramref name="securityToken"/>.
         /// </summary>
         /// <param name="securityToken">The security token for verifying.</param>
-        /// <param name="code">The code to validate.</param>
+        /// <param name="code">The TOTP to validate.</param>
         /// <param name="modifier">The modifier</param>
         /// <returns><c>True</c> if validate succeed, otherwise, <c>false</c>.</returns>
-        public static bool ValidateCode(byte[] securityToken, int code, string modifier = null)
+        public static bool ValidateTotp(byte[] securityToken, int code, string modifier = null)
         {
             if (securityToken == null)
             {
@@ -303,21 +303,21 @@ namespace Arch.Core
         }
 
         /// <summary>
-        /// Generates code for the specified <paramref name="securityToken"/>.
+        /// Generates TOTP for the specified <paramref name="securityToken"/>.
         /// </summary>
         /// <param name="securityToken">The security token to generate code.</param>
         /// <param name="modifier">The modifier.</param>
         /// <returns>The generated code.</returns>
-        public static int GenerateCode(string securityToken, string modifier = null) => GenerateCode(Encoding.Unicode.GetBytes(securityToken), modifier);
+        public static int GenerateTotp(string securityToken, string modifier = null) => GenerateCode(Encoding.Unicode.GetBytes(securityToken), modifier);
 
         /// <summary>
-        /// Validates the code for the specified <paramref name="securityToken"/>.
+        /// Validates the TOTP for the specified <paramref name="securityToken"/>.
         /// </summary>
         /// <param name="securityToken">The security token for verifying.</param>
         /// <param name="code">The code to validate.</param>
         /// <param name="modifier">The modifier</param>
         /// <returns><c>True</c> if validate succeed, otherwise, <c>false</c>.</returns>
-        public static bool ValidateCode(string securityToken, int code, string modifier = null) => ValidateCode(Encoding.Unicode.GetBytes(securityToken), code, modifier);
+        public static bool ValidateTotp(string securityToken, int code, string modifier = null) => ValidateCode(Encoding.Unicode.GetBytes(securityToken), code, modifier);
     }
 }
 ```
