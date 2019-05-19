@@ -22,6 +22,9 @@ import java.security.GeneralSecurityException;
  * TOTP: https://tools.ietf.org/html/rfc6238
  */
 public class Totp {
+    /**
+     * TOTP supported hash algorithms
+     */
     public enum HashAlgorithm {
         HmacSHA1("HmacSHA1"), HmacSHA256("HmacSHA256"), HmacSHA512("HmacSHA512");
 
@@ -41,6 +44,7 @@ public class Totp {
         }
     }
 
+    //region public default setting
     // default hash algorithm
     public static final HashAlgorithm DEFAULT_HASH_ALGORITHM = HashAlgorithm.HmacSHA1;
 
@@ -53,7 +57,9 @@ public class Totp {
     // T0 is the Unix time to start counting time steps
     // (default value is 0, i.e., the Unix epoch)
     public static final int DEFAULT_T0 = 0;
+    //endregion
 
+    //region private members
     private static final int[] DIGITS_POWER
             // 0  1   2    3     4      5       6        7         8
             = {1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000};
@@ -63,28 +69,39 @@ public class Totp {
     private int digits;
     private HashAlgorithm hashAlgorithm;
 
-    private Totp(int timeStep, int t0, int digits, HashAlgorithm hashAlgorithm) {
+    private Totp() {
+        this.timeStep = DEFAULT_TIME_STEP;
+        this.t0 = DEFAULT_T0;
+        this.digits = DEFAULT_DIGITS;
+        this.hashAlgorithm = DEFAULT_HASH_ALGORITHM;
+    }
+    //endregion
+
+    //region builder methods
+    public static Totp withDefault() {
+        return new Totp();
+    }
+
+    public Totp timeStep(int timeStep) {
         this.timeStep = timeStep;
+        return this;
+    }
+
+    public Totp epoch(int t0) {
         this.t0 = t0;
+        return this;
+    }
+
+    public Totp algorithm(HashAlgorithm algorithm) {
+        this.hashAlgorithm = algorithm;
+        return this;
+    }
+
+    public Totp digits(int digits) {
         this.digits = digits;
-        this.hashAlgorithm = hashAlgorithm;
+        return this;
     }
-
-    public static Totp newInstance() {
-        return new Totp(
-                DEFAULT_TIME_STEP,
-                DEFAULT_T0,
-                DEFAULT_DIGITS,
-                DEFAULT_HASH_ALGORITHM);
-    }
-
-    public static Totp newInstance(
-            int timeStep,
-            int t0,
-            int digits,
-            HashAlgorithm hashAlgorithm) {
-        return new Totp(timeStep, t0, digits, hashAlgorithm);
-    }
+    //endregion
 
     /**
      * This method generates a TOTP value for the given secret.
@@ -112,11 +129,10 @@ public class Totp {
         byte[] timeStepBytes = ByteBuffer.allocate(8)
                 .putLong(timeStepNumber)
                 .array();
-                
-        // TODO: if the secret is HEX, not using UTF-8 encoding.
+
         byte[] secretBytes = secret.getBytes(StandardCharsets.UTF_8);
 
-        // the output would be a 20 byte long in RFC4226, see: https://tools.ietf.org/html/rfc4226
+        // the output would be a 20 byte long
         byte[] hmacHash = getHmacSHA(secretBytes, timeStepBytes);
 
         // put selected bytes into result int
