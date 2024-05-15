@@ -1,7 +1,7 @@
 # TOTP
 Java & C# implementation of [TOTP: Time-Based One-Time Password Algorithm](https://tools.ietf.org/html/rfc6238)
 
-# Java implementation
+# Java
 ```java
 /*
  * Copyright (c) 2018-2019 yingtingxu(徐应庭). All rights reserved.
@@ -202,7 +202,7 @@ public class Totp {
 }
 ```
 
-# C# implementation
+# C#
 ```csharp
 // Copyright (c) 2018-2019 yingtingxu(徐应庭). All rights reserved.
 
