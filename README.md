@@ -1,5 +1,5 @@
 # TOTP
-Java/C# implementation of [TOTP: Time-Based One-Time Password Algorithm](https://tools.ietf.org/html/rfc6238)
+Java & C# implementation of [TOTP: Time-Based One-Time Password Algorithm](https://tools.ietf.org/html/rfc6238)
 
 # Java implementation
 ```java
